@@ -39,59 +39,56 @@
         .fact-description {
             color: #666;
         }
+
+        #replace-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <h1>Lion Facts</h1>
         <div id="facts-container"></div>
+        <button id="replace-button">Replace Facts</button>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const facts = [
-                {
-                    "title": "Social Structure",
-                    "description": "Lions are the only big cats that live in groups, known as prides. A pride typically consists of related females, their offspring, and a small number of adult males."
-                },
-                {
-                    "title": "Roaring Communication",
-                    "description": "Lions are known for their powerful roars, which can be heard up to 8 kilometers (5 miles) away. Roaring helps them communicate with pride members and establish territory."
-                },
-                {
-                    "title": "Habitat",
-                    "description": "Lions primarily inhabit savannas, grasslands, and open woodlands across sub-Saharan Africa. A small population of Asiatic lions can also be found in the Gir Forest of India."
-                },
-                {
-                    "title": "Hunting Strategy",
-                    "description": "Lions are apex predators and primarily hunt large herbivores such as zebras, wildebeests, and buffalo. They often hunt in groups to increase their success rate."
-                },
-                {
-                    "title": "Physical Characteristics",
-                    "description": "Male lions are distinguished by their impressive manes, which can vary in color and size. The mane serves as a sign of maturity and health, and may protect the neck during fights."
-                },
-                {
-                    "title": "Diet",
-                    "description": "Lions are carnivorous and can consume up to 40 kilograms (88 pounds) of meat in a single meal. They often rest for several days after a large kill."
-                },
-                {
-                    "title": "Lifespan",
-                    "description": "In the wild, lions typically live for 10 to 14 years. In captivity, they can live up to 20 years due to better care and absence of threats."
-                },
-                {
-                    "title": "Reproduction",
-                    "description": "Female lions give birth to a litter of 1 to 4 cubs after a gestation period of about 110 days. Cubs are born blind and rely on their mother for protection and nourishment."
-                },
-                {
-                    "title": "Conservation Status",
-                    "description": "Lions are classified as vulnerable by the International Union for Conservation of Nature (IUCN) due to habitat loss, human-wildlife conflict, and poaching."
-                },
-                {
-                    "title": "Cultural Significance",
-                    "description": "Lions have been symbols of strength and courage in various cultures throughout history. They are often depicted in art, literature, and heraldry."
-                }
-            ];
+        const initialFacts = [
+            {
+                "title": "Social Structure",
+                "description": "Lions are the only big cats that live in groups, known as prides. A pride typically consists of related females, their offspring, and a small number of adult males."
+            },
+            {
+                "title": "Roaring Communication",
+                "description": "Lions are known for their powerful roars, which can be heard up to 8 kilometers (5 miles) away. Roaring helps them communicate with pride members and establish territory."
+            },
+            {
+                "title": "Habitat",
+                "description": "Lions primarily inhabit savannas, grasslands, and open woodlands across sub-Saharan Africa. A small population of Asiatic lions can also be found in the Gir Forest of India."
+            }
+        ];
 
+        const newFacts = [
+            {
+                "title": "Hunting Strategy",
+                "description": "Lions are apex predators and primarily hunt large herbivores such as zebras, wildebeests, and buffalo. They often hunt in groups to increase their success rate."
+            },
+            {
+                "title": "Physical Characteristics",
+                "description": "Male lions are distinguished by their impressive manes, which can vary in color and size. The mane serves as a sign of maturity and health, and may protect the neck during fights."
+            },
+            {
+                "title": "Diet",
+                "description": "Lions are carnivorous and can consume up to 40 kilograms (88 pounds) of meat in a single meal. They often rest for several days after a large kill."
+            }
+        ];
+
+        function displayFacts(facts) {
             const factsContainer = document.getElementById('facts-container');
+            factsContainer.innerHTML = ''; // Clear existing facts
 
             facts.forEach(fact => {
                 const factDiv = document.createElement('div');
@@ -109,7 +106,16 @@
                 factDiv.appendChild(factDescription);
                 factsContainer.appendChild(factDiv);
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayFacts(initialFacts);
+
+            document.getElementById('replace-button').addEventListener('click', () => {
+                displayFacts(newFacts);
+            });
         });
     </script>
 </body>
 </html>
+
