@@ -40,12 +40,23 @@
             color: #666;
         }
 
-        #replace-button {
+        #replace-button, #add-fact-button {
             display: block;
             margin: 20px auto;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+        }
+
+        #fact-form {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        #fact-form input {
+            margin: 5px;
+            padding: 5px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -54,6 +65,11 @@
         <h1>Lion Facts</h1>
         <div id="facts-container"></div>
         <button id="replace-button">Replace Facts</button>
+        <div id="fact-form">
+            <input type="text" id="fact-title" placeholder="Fact Title">
+            <input type="text" id="fact-description" placeholder="Fact Description">
+            <button id="add-fact-button">Add Fact</button>
+        </div>
     </div>
     <script>
         const initialFacts = [
@@ -71,20 +87,7 @@
             }
         ];
 
-        const newFacts = [
-            {
-                "title": "Hunting Strategy",
-                "description": "Lions are apex predators and primarily hunt large herbivores such as zebras, wildebeests, and buffalo. They often hunt in groups to increase their success rate."
-            },
-            {
-                "title": "Physical Characteristics",
-                "description": "Male lions are distinguished by their impressive manes, which can vary in color and size. The mane serves as a sign of maturity and health, and may protect the neck during fights."
-            },
-            {
-                "title": "Diet",
-                "description": "Lions are carnivorous and can consume up to 40 kilograms (88 pounds) of meat in a single meal. They often rest for several days after a large kill."
-            }
-        ];
+        let userFacts = [];
 
         function displayFacts(facts) {
             const factsContainer = document.getElementById('facts-container');
@@ -112,10 +115,60 @@
             displayFacts(initialFacts);
 
             document.getElementById('replace-button').addEventListener('click', () => {
-                displayFacts(newFacts);
+                displayFacts(userFacts.length > 0 ? userFacts : initialFacts);
+            });
+
+            document.getElementById('add-fact-button').addEventListener('click', () => {
+                let title = document.getElementById('fact-title').value.trim();
+                let description = document.getElementById('fact-description').value.trim();
+
+                const MIN_TITLE_LENGTH = 3;
+                const MAX_TITLE_LENGTH = 50;
+                const MIN_DESCRIPTION_LENGTH = 10;
+                const MAX_DESCRIPTION_LENGTH = 300;
+                const forbiddenCharacters = /[!@#$%^&*(),.?":{}|<>]/g;
+                const profanityList = ['badword1', 'badword2']; // Example list
+
+                if (!title || !description) {
+                    alert('Title and description cannot be empty or just whitespace.');
+                    return;
+                }
+
+                if (title.length < MIN_TITLE_LENGTH || title.length > MAX_TITLE_LENGTH) {
+                    alert(`Title must be between ${MIN_TITLE_LENGTH} and ${MAX_TITLE_LENGTH} characters.`);
+                    return;
+                }
+
+                if (description.length < MIN_DESCRIPTION_LENGTH || description.length > MAX_DESCRIPTION_LENGTH) {
+                    alert(`Description must be between ${MIN_DESCRIPTION_LENGTH} and ${MAX_DESCRIPTION_LENGTH} characters.`);
+                    return;
+                }
+
+                if (forbiddenCharacters.test(title) || forbiddenCharacters.test(description)) {
+                    alert('Please avoid using special characters in the title or description.');
+                    return;
+                }
+
+                const isDuplicate = userFacts.some(fact => fact.title === title && fact.description === description);
+
+                if (isDuplicate) {
+                    alert('This fact already exists.');
+                    return;
+                }
+
+                const containsProfanity = profanityList.some(word => title.includes(word) || description.includes(word));
+
+                if (containsProfanity) {
+                    alert('Please avoid using inappropriate language.');
+                    return;
+                }
+
+                userFacts.push({ title, description });
+                document.getElementById('fact-title').value = '';
+                document.getElementById('fact-description').value = '';
+                alert('Fact added! Click "Replace Facts" to see your facts.');
             });
         });
     </script>
 </body>
 </html>
-
